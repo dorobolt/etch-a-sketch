@@ -1,0 +1,11 @@
+#container {
+    display: flex;
+    border: 2px solid black;
+    height: 640px;
+    width: 640px;
+}
+
+.block {
+    height: 40px;
+    width: 40px;
+}
