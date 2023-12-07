@@ -14,22 +14,6 @@ let randomColor;
 
 // drawing default 16x16 grid
 drawBox(grid)
-
-// button to set custom grid size
-const size = document.querySelector('.size')
-size.addEventListener('click', () => {
-    chooseSize();
-    const reset = document.querySelectorAll('.bigblock');
-    reset.forEach(box => {
-        box.remove();
-    });
-    panelSize.textContent = `Size = ${grid}x${grid}`;
-    gridSize = 640 / grid;
-    drawBox(grid);
-    sketch();
-    console.log(mode);
-});
-
 sketch();
 
 function drawBox(num) {
@@ -48,18 +32,14 @@ function drawBox(num) {
 }
 
 function sketch() {
-
     const block = document.querySelectorAll('.block');
-    console.log(block.length);
 
     // set condition for mouse down and mouse up
     document.addEventListener('mousedown', () => {
         mousedown = true;
-        console.log(mousedown);
     });
     document.addEventListener('mouseup', () => {
         mousedown = false;
-        console.log(mousedown);
     });
 
     // set event listener for when holding mouse 
@@ -83,6 +63,20 @@ function sketch() {
     erase.addEventListener('click', () => {
         mode = 'erase';
     })
+    let slider = document.querySelector("#quantity");
+    slider.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            grid = slider.value;
+            const reset = document.querySelectorAll('.bigblock');
+            reset.forEach(box => {
+                box.remove();
+            });
+            panelSize.textContent = `Size = ${grid}x${grid}`;
+            gridSize = 640 / grid;
+            drawBox(grid);
+            sketch();
+        }
+    });
 
     // setting for clearing all grid
     const blank = document.querySelector('.clear')
@@ -104,18 +98,5 @@ function etch(e) {
     else if (mode === 'rainbow') {
         randomColor = Math.floor(Math.random() * 16777215).toString(16);
         e.target.style.backgroundColor = `#${randomColor}`;
-    }
-    console.log(randomColor);
-}
-
-function chooseSize() {
-    let gSize = prompt('Type Grid Size min = 1 max = 100')
-    gSize = Number(gSize)
-    if (gSize < 1 || gSize > 100 || gSize == NaN) {
-        chooseSize();
-    }
-    else {
-        grid = gSize;
-        return grid;
     }
 }
